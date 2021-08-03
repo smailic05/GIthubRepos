@@ -10,22 +10,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubrepos.retrofit.ItemRepos
-import com.example.githubrepos.retrofit.Repositories
 import com.example.githubrepos.retrofit.RetrofitRepository
 import com.example.githubrepos.room.RoomRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class MainViewModel:ViewModel() {
     private val retrofitRepository=RetrofitRepository()
 
     private val roomRepository=RoomRepository()
 
-    private val _responseRepos= MutableLiveData<Repositories>()
-    val responseRepos:LiveData<Repositories>
+    private val _responseRepos= MutableLiveData<List<ItemRepos>>()
+    val responseRepos:LiveData<List<ItemRepos>>
         get() = _responseRepos
 
     var listOfDownloadedItems= roomRepository.getAllRepositories()
+
+    private val _snackbar= MutableLiveData<String>()
+    val snackbar:LiveData<String>
+        get() = _snackbar
 
     fun saveItem(itemRepos: ItemRepos,context:Context)=viewModelScope.launch(Dispatchers.IO){
         val request= DownloadManager.Request(
@@ -47,7 +51,14 @@ class MainViewModel:ViewModel() {
     }
 
     fun getRepositoriesFromInternet(query: String)=viewModelScope.launch(Dispatchers.IO) {
-        _responseRepos.postValue(retrofitRepository.createRequest(query))
+        try {
+            _responseRepos.postValue(retrofitRepository.createRequest(query))
+        }
+        catch (exception:HttpException)
+        {
+            _snackbar.postValue("User was not found")
+        }
+
     }
 
 }

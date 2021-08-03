@@ -6,17 +6,6 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 
-data class Repositories(
-
-	@field:SerializedName("total_count")
-	val totalCount: Int? = null,
-
-	@field:SerializedName("incomplete_results")
-	val incompleteResults: Boolean? = null,
-
-	@field:SerializedName("items")
-	val items: List<ItemRepos?>? = null
-)
 
 @Entity(tableName = "repositories")
 data class ItemRepos(
@@ -30,9 +19,6 @@ data class ItemRepos(
 	@field:SerializedName("id")
 	val id: Int? = null,
 
-	@field:SerializedName("forks")
-	val forks: Int? = null,
-
 	@field:SerializedName("full_name")
 	val fullName: String? = null,
 
@@ -41,9 +27,6 @@ data class ItemRepos(
 
 	@field:SerializedName("description")
 	val description: String? = null,
-
-	@field:SerializedName("created_at")
-	val createdAt: String? = null,
 
 	@field:SerializedName("owner")
 	@TypeConverters(Converters::class)

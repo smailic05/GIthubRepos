@@ -2,9 +2,9 @@ package com.example.githubrepos.retrofit
 
 
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.Path
 
 public interface RepositoriesApi {
-    @GET("/search/repositories")
-    suspend fun getRepos(@Query("q") query: String): Repositories
+    @GET("/users/{q}/repos")
+    suspend fun getRepos(@Path("q") query: String): List<ItemRepos>
 }

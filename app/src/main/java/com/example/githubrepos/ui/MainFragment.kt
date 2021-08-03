@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.githubrepos.MainViewModel
 import com.example.githubrepos.adapter.RepositoriesAdapter
 import com.example.githubrepos.databinding.MainFragmentBinding
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment:Fragment() {
     private var _binding: MainFragmentBinding? = null
@@ -36,10 +37,12 @@ class MainFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        model.snackbar.observe(viewLifecycleOwner,{
+            Snackbar.make(view,it,Snackbar.LENGTH_SHORT).show()
+        })
         binding.recycler.adapter=repositoriesAdapter
         model.responseRepos.observe(viewLifecycleOwner,{
-            repositoriesAdapter.submitList(it.items)
-
+            repositoriesAdapter.submitList(it)
         })
     }
 
