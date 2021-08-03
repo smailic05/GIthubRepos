@@ -39,11 +39,12 @@ class MainActivity : AppCompatActivity(),ItemAction {
         val myActionMenuItem = menu?.findItem(R.id.search)
         val searchView=myActionMenuItem?.actionView as SearchView
         //Реализация поиска
+        var cachedValue=""
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null && query!="") {
+                if (query != null && query!=""&& query!=cachedValue) {
+                    cachedValue=query
                     model.getRepositoriesFromInternet(query)
-                    //todo check for equality
                 }
                 return true
             }

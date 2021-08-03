@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.example.githubrepos.ItemAction
 import com.example.githubrepos.databinding.ReposItemBinding
 import com.example.githubrepos.retrofit.ItemRepos
@@ -23,6 +25,11 @@ class RepositoriesAdapter(private var context: Context):
         fun bind(itemRepos: ItemRepos){
             binding.description.text=itemRepos.description
             binding.reposName.text=itemRepos.name
+            binding.nameUser.text=itemRepos.owner?.login
+            binding.numberOfStars.text= itemRepos.stargazersCount.toString()
+            binding.imageAvatar.load(itemRepos.owner?.avatarUrl){
+                transformations(CircleCropTransformation())
+            }
             binding.root.setOnClickListener {
                 listener.openBrowser(itemRepos)
             }
