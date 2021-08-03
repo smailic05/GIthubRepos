@@ -14,24 +14,30 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.githubrepos.ItemAction
 import com.example.githubrepos.MainViewModel
 import com.example.githubrepos.R
-import com.example.githubrepos.adapter.RepositoriesAdapter
 import com.example.githubrepos.databinding.ActivityMainBinding
 import com.example.githubrepos.retrofit.ItemRepos
+import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity(),ItemAction {
     private lateinit var binding: ActivityMainBinding
     private val model: MainViewModel by viewModels()
-    private val repositoriesAdapter= RepositoriesAdapter(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        model.snackbar.observe(this,{
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+        })
+        setupNavigation()
+    }
+
+    private fun setupNavigation() {
         setSupportActionBar(binding.toolbar)
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
         val navController = host.navController
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        binding.toolbar.setupWithNavController(navController,appBarConfiguration)
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

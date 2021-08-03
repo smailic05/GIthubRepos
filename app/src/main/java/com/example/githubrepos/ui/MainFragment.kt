@@ -22,6 +22,7 @@ class MainFragment:Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         repositoriesAdapter= RepositoriesAdapter(context)
+
     }
 
     override fun onCreateView(
@@ -37,9 +38,6 @@ class MainFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        model.snackbar.observe(viewLifecycleOwner,{
-            Snackbar.make(view,it,Snackbar.LENGTH_SHORT).show()
-        })
         binding.recycler.adapter=repositoriesAdapter
         model.responseRepos.observe(viewLifecycleOwner,{
             repositoriesAdapter.submitList(it)
